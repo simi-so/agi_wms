@@ -1,0 +1,10 @@
+
+task wmsjson(type: Exec){
+    workingDir 'trafo_sql/wms'
+    commandLine './tojson.sh'
+}
+
+task wmsqgs(type:Exec){
+    workingDir 'jqgs'
+    commandLine './toqgs.sh'
+}
