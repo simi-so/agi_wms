@@ -1,10 +1,23 @@
 
-task wmsjson(type: Exec){
-    workingDir 'trafo_sql/wms'
+task wmsJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/wms'
     commandLine './tojson.sh'
 }
 
-task wmsqgs(type:Exec){
-    workingDir 'jqgs'
+task wmsDown(type:Exec){
+    workingDir 'wms_clust'
+    commandLine 'docker-compose','down'
+    ignoreExitValue true
+}
+
+task wmsQgs(type:Exec){
+    dependsOn wmsDown
+    dependsOn wmsJson
+    workingDir 'pipemock/jqgs'
     commandLine './toqgs.sh'
+}
+
+task wmsUp(type:Exec, dependsOn:wmsQgs){
+    workingDir 'wms_clust'
+    commandLine 'docker-compose','up','-d'
 }

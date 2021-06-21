@@ -3,7 +3,7 @@ services:
   qgs:
     image: sourcepole/qwc-qgis-server:2.18.28
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - ../.gitignored/pipe_data/qgs_wms:/data:ro
       - ./pg_service.conf:/etc/postgresql-common/pg_service.conf:ro

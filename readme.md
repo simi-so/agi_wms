@@ -62,8 +62,39 @@ Todo:
 * sourcepole
   * Angabe der benötigten Minimalversion von python
   * Packetierung des "executable" inlusive default qml, qgs (point, service_2, ...)
-  * Relative Auflösung funktionert bei --qgsTemplateDir
+  * Relative Auflösung funktionert bei --qgsTemplateDir nicht
   * Hardcodierter Name des Ausgabe-qgs: Besser?: Name wird explizit angegeben.
   * Wo "landen" die assets?
   * Docku der Service-Images
     * QGIS Server
+
+# Ramp-Up
+
+Die Migration von Config-DB und Config-Generator auf SIMI und Trafos betrifft alle Services der GDI. Die Komplexität des Gesamtsystems und der Datenmigration sind hoch.
+
+Entsprechend macht es Sinn, die neue Umgebung bewusst in "baby-steps" hochzufahren. Das Verhalten des neuen Konfig-Deployments wird Testfall für Testfall und Service für Service
+"hochgefahren"
+
+## Testkonfigurationen
+
+* Vec Einzellayer - Für sich publiziert
+* Vec Einzellayer - Nur via Facadelayer publiziert
+* Vec Einzellayer - Nur via Gruppenlayer publiziert
+* Facade von Vecs - Für sich publiziert
+* Facade von Vecs - Nur via Gruppenlayer publiziert
+
+## Stand der Testfälle bzgl. der Services
+
+Services (Später Spalten der Übersichtstabelle):
+
+* WMS Standalone (WMSS)
+* WFS Standalone (WFSS)
+* WMS Cluster (WMSC)
+* Dataservice (DS)
+* Searchservice (SS)
+* WFS Cluster (WFSC)
+* WebGIS Client (WGC)
+* CCC-Integration (CCC)
+* SO-Locator (LOC)
+
+Cross-Cutting: Map, Permissions
