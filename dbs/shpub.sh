@@ -1,0 +1,1 @@
+docker exec -it dbs_pub_1 /bin/bash

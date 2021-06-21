@@ -1,0 +1,4 @@
+task env_ok(type: Exec, dependsOn: stage){
+    workingDir './inttest'
+    commandLine './env_ok.sh'
+}
