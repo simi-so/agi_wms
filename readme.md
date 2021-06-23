@@ -67,6 +67,7 @@ Todo:
   * Wo "landen" die assets?
   * Docku der Service-Images
     * QGIS Server
+    * pg_services.conf: Telefonieren nach haus...?
 
 # Ramp-Up
 
@@ -77,11 +78,14 @@ Entsprechend macht es Sinn, die neue Umgebung bewusst in "baby-steps" hochzufahr
 
 ## Testkonfigurationen
 
-* Vec Einzellayer - Für sich publiziert
-* Vec Einzellayer - Nur via Facadelayer publiziert
-* Vec Einzellayer - Nur via Gruppenlayer publiziert
-* Facade von Vecs - Für sich publiziert
-* Facade von Vecs - Nur via Gruppenlayer publiziert
+* Vec Einzellayer - Für sich publiziert (TEST 1)
+* Vec Einzellayer - Nur via Facadelayer publiziert (TEST 2)
+* Vec Einzellayer - Nur via Gruppenlayer publiziert (TEST 3)
+* Facade von Vecs - Für sich publiziert (TEST 4)
+* Facade von Vecs - Nur via Gruppenlayer publiziert (TEST 5)
+* Vec Einzellayer - In Backgroundlayer publiziert (TEST 6)
+* Facade von Vecs - In Backgroundlayer publiziert (TEST 7)
+* Vec Einzellayer - Als zu löschen Markiert (TEST 8)
 
 ## Stand der Testfälle bzgl. der Services
 
