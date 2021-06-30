@@ -69,12 +69,46 @@ Todo:
     * QGIS Server
     * pg_services.conf: Telefonieren nach haus...?
 
-# Ramp-Up
+# Ramp-Up und Testfälle
 
 Die Migration von Config-DB und Config-Generator auf SIMI und Trafos betrifft alle Services der GDI. Die Komplexität des Gesamtsystems und der Datenmigration sind hoch.
 
 Entsprechend macht es Sinn, die neue Umgebung bewusst in "baby-steps" hochzufahren. Das Verhalten des neuen Konfig-Deployments wird Testfall für Testfall und Service für Service
 "hochgefahren"
+
+## Test-Szenarien
+
+* WMS: Wird der WMS inklusive Permission's und Featureinfo korrekt konfiguriert?  
+    Aspekte:
+    * Featureinfo (Simpel und Komplex(MP). Vektor und Raster).
+    * Permission (Public und "Private")
+        * Auf DSV, Facadelayer und Layergruppen
+* WGC: Funktionieren die von der Konfiguration betroffenen wichtigen Funktionen?
+    * Suchen und Laden von Ebenen (DSV, Facadelayer und Layergruppen)
+    * URL-Aufruf
+        * Laden von ganzen Karten
+        * Laden von Ebenen
+    * Anzeige der Metainformationen (i)-Knopf
+    * Print: Ebenen und Hintergrundkarten, Spezialprint "Plan für das Grundbuch"
+    * Featureinfo
+        * Simpel (Vektor und Raster)
+        * Komplex(MP)
+        * Anzeige von Objekt-Report(MP)
+    * Editieren einer Ebene
+    * CCC-Plugin am Beispiel BauGK(MP)
+* Data-Service
+    * Lesen von Zugriffsgeschützten Ebenen (xy.data)
+    * "Where-Abfrage" auf die ID, für Ebene ohne weitere Attribute
+* SO-Locator
+    * Suchen und Laden von Ebenen (DSV, Facadelayer und Layergruppen)
+
+Fragen:
+* Data-Service: Soll dieser in der Pipeline zwingend aktiviert werden, wenn eine Objektsuche konfiguriert ist?
+
+
+
+
+
 
 ## Testkonfigurationen
 

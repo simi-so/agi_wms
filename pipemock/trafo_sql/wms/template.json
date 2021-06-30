@@ -14,7 +14,7 @@
     "service_title": "",
     "service_abstract": "",
     "keywords": [
-      "somap_wms"
+      "wms"
     ],
     "online_resource": "https://www.google.ch",
     "contact_person": "",
@@ -25,8 +25,8 @@
     "fees": "",
     "access_constraints": "",
 
-    "root_name": "somap_wms",
-    "root_title": "",
+    "root_name": "ch.so.wms",
+    "root_title": "ch.so.wms",
 
     "crs_list": [
       "EPSG:2056"

@@ -4,6 +4,11 @@ task wmsJson(type:Exec){
     commandLine './tojson.sh'
 }
 
+task printJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/qwc_print'
+    commandLine './tojson.sh'
+}
+
 task wmsDown(type:Exec){
     workingDir 'wms_clust'
     commandLine 'docker-compose','down'
@@ -11,13 +16,21 @@ task wmsDown(type:Exec){
 }
 
 task wmsQgs(type:Exec){
-    dependsOn wmsDown
     dependsOn wmsJson
     workingDir 'pipemock/jqgs'
-    commandLine './toqgs.sh'
+    commandLine './toWmsQgs.sh'
 }
 
-task wmsUp(type:Exec, dependsOn:wmsQgs){
+task printQgs(type:Exec){
+    dependsOn printJson
+    workingDir 'pipemock/jqgs'
+    commandLine './toPrintQgs.sh'
+}
+
+task wmsUp(type:Exec){
+    dependsOn wmsQgs
+    dependsOn printQgs
+    dependsOn wmsDown
     workingDir 'wms_clust'
     commandLine 'docker-compose','up','-d'
 }

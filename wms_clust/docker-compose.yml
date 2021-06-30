@@ -6,7 +6,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - "../.gitignored/dbs/pub_pgdat/.pgdata:/var/lib/postgresql/data/pgdata"
       - "../.gitignored/dbs/exchange:/tmp"
@@ -17,7 +17,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ../.gitignored/pipe_data/qgs_wms:/data:ro
+      - ../.gitignored/pipe_data/qgs:/data:ro
       - ./pg_service.conf:/etc/postgresql-common/pg_service.conf:ro
     depends_on:
       - postgis
