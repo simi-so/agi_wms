@@ -1,15 +1,6 @@
 version: "3"
 services:
-  qgs:
-    image: sourcepole/qwc-qgis-server:2.18.28
-    environment:
-      - QGIS_SERVER_LOG_LEVEL=INFO
-    ports:
-      - "8081:80"
-    volumes:
-      - ../.gitignored/pipe_data/qgs_wms:/data:ro
-      - ./pg_service.conf:/etc/postgresql-common/.pg_service.conf:ro
-  pub:
+  postgis:
     image: postgis/postgis:13-3.1-alpine
     environment:
       - POSTGRES_PASSWORD=postgres
@@ -19,3 +10,14 @@ services:
     volumes:
       - "../.gitignored/dbs/pub_pgdat/.pgdata:/var/lib/postgresql/data/pgdata"
       - "../.gitignored/dbs/exchange:/tmp"
+  qgs:
+    image: sourcepole/qwc-qgis-server:2.18.28
+    environment:
+      - QGIS_SERVER_LOG_LEVEL=INFO
+    ports:
+      - "8081:80"
+    volumes:
+      - ../.gitignored/pipe_data/qgs_wms:/data:ro
+      - ./pg_service.conf:/etc/postgresql-common/pg_service.conf:ro
+    depends_on:
+      - postgis
