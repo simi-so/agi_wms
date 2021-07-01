@@ -112,14 +112,25 @@ Fragen:
 
 ## Testkonfigurationen
 
-* Vec Einzellayer - Für sich publiziert (TEST 1)
-* Vec Einzellayer - Nur via Facadelayer publiziert (TEST 2)
-* Vec Einzellayer - Nur via Gruppenlayer publiziert (TEST 3)
-* Facade von Vecs - Für sich publiziert (TEST 4)
-* Facade von Vecs - Nur via Gruppenlayer publiziert (TEST 5)
-* Vec Einzellayer - In Backgroundlayer publiziert (TEST 6)
-* Facade von Vecs - In Backgroundlayer publiziert (TEST 7)
-* Vec Einzellayer - Als zu löschen Markiert (TEST 8)
+### WMS Gruppierungen (test.wms.X)
+
+1. Vec Einzellayer - Für sich publiziert (TEST 1)
+2. Vec Einzellayer - Nur via Facadelayer publiziert (TEST 2)
+3. Vec Einzellayer - Nur via Gruppenlayer publiziert (TEST 3)
+4. Facade von Vecs - Für sich publiziert (TEST 4)
+5. Facade von Vecs - Nur via Gruppenlayer publiziert (TEST 5)
+6. Vec Einzellayer - In Backgroundlayer publiziert (TEST 6)
+7. Facade von Vecs - In Backgroundlayer publiziert (TEST 7)
+8. Vec Einzellayer - Als zu löschen Markiert (TEST 8)
+
+### Permissions (test.perm.X)
+
+1. Public Einzellayer
+1. Private Einzellayer
+1. Public Facade
+1. Private Facade
+1. Public homo Group
+1. Private hetero Group
 
 ## Stand der Testfälle bzgl. der Services
 
