@@ -9,8 +9,13 @@ task printJson(type:Exec){
     commandLine './tojson.sh'
 }
 
-task wmsDown(type:Exec){
-    workingDir 'wms_clust'
+task wfsJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/wfs'
+    commandLine './tojson.sh'
+}
+
+task qDown(type:Exec){
+    workingDir 'qgs_clust'
     commandLine 'docker-compose','down'
     ignoreExitValue true
 }
@@ -27,10 +32,17 @@ task printQgs(type:Exec){
     commandLine './toPrintQgs.sh'
 }
 
-task wmsUp(type:Exec){
+task wfsQgs(type:Exec){
+    dependsOn wfsJson
+    workingDir 'pipemock/jqgs'
+    commandLine './toWfsQgs.sh'
+}
+
+task qUp(type:Exec){
     dependsOn wmsQgs
     dependsOn printQgs
-    dependsOn wmsDown
-    workingDir 'wms_clust'
+    dependsOn wfsQgs
+    dependsOn qDown
+    workingDir 'qgs_clust'
     commandLine 'docker-compose','up','-d'
 }

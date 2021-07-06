@@ -131,6 +131,8 @@ Fragen:
 1. Private Facade
 1. Public homo Group
 1. Private hetero Group
+1. Multiple private Children in Group
+1. Dependeny permission
 
 ## Stand der Testfälle bzgl. der Services
 
