@@ -134,6 +134,10 @@ Fragen:
 1. Multiple private Children in Group
 1. Dependeny permission
 
+### Integration Permissions / WMS
+1. Verhalten mit test.perm.3.main: Ein Kind ist als "zu löschen" markiert
+1. Verhalten der Testfälle test.perm 1,2 und 4-6 wie erwartet?
+
 ## Stand der Testfälle bzgl. der Services
 
 Services (Später Spalten der Übersichtstabelle):

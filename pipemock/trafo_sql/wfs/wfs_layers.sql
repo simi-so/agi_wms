@@ -39,7 +39,7 @@ tbl_dsv AS ( -- Tableview-Informationen der 1-n Tableviews pro Postgres-Table
 		simi.simidata_table_view tv ON dsv.id = tv.id 
 	WHERE 
 		dsv.raw_download is true 
-	AND identifier not like 'test.%'
+	--AND identifier not like 'test.%'
 ),
 
 tbl_dsv_attr AS ( -- Informationen zu den Attributen einer Tableview

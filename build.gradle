@@ -14,7 +14,7 @@ task wfsJson(type:Exec){
     commandLine './tojson.sh'
 }
 
-task qDown(type:Exec){
+task down(type:Exec){
     workingDir 'qgs_clust'
     commandLine 'docker-compose','down'
     ignoreExitValue true
@@ -38,11 +38,23 @@ task wfsQgs(type:Exec){
     commandLine './toWfsQgs.sh'
 }
 
-task qUp(type:Exec){
-    dependsOn wmsQgs
+task ogcJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/ogc-service'
+    commandLine './tojson.sh'
+}
+
+task permJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/permission'
+    commandLine './tojson.sh'
+}
+
+task up(type:Exec){
     //dependsOn printQgs
-    dependsOn wfsQgs
-    dependsOn qDown
+    //dependsOn wfsQgs
+    dependsOn down
+    //dependsOn wmsQgs
+    dependsOn ogcJson
+    dependsOn permJson
     workingDir 'qgs_clust'
-    commandLine 'docker-compose','up','-d'
+    commandLine 'docker-compose','up'
 }

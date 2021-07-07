@@ -21,3 +21,16 @@ services:
       - ./pg_service.conf:/etc/postgresql-common/pg_service.conf:ro
     depends_on:
       - postgis
+  ogc:
+    image: sourcepole/qwc-ogc-service:v2.0.4
+    environment:
+      - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
+      - JWT_COOKIE_CSRF_PROTECT=True
+      - SERVICE_MOUNTPOINT=/ows
+      - FLASK_DEBUG=1
+    volumes:
+      - ../.gitignored/pipe_data/ogc:/srv/qwc_service/config/default:ro
+    ports:
+      - "5013:9090"
+    depends_on:
+      - qgs
