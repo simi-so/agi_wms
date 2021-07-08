@@ -112,7 +112,7 @@ Fragen:
 
 ## Testkonfigurationen
 
-### WMS Gruppierungen (test.wms.X)
+### WMS (test.wms.*)
 
 1. Vec Einzellayer - Für sich publiziert (TEST 1)
 2. Vec Einzellayer - Nur via Facadelayer publiziert (TEST 2)
@@ -123,7 +123,7 @@ Fragen:
 7. Facade von Vecs - In Backgroundlayer publiziert (TEST 7)
 8. Vec Einzellayer - Als zu löschen Markiert (TEST 8)
 
-### Permissions (test.perm.X)
+### Permissions (test.perm.*)
 
 1. Public Einzellayer
 1. Private Einzellayer
@@ -136,7 +136,15 @@ Fragen:
 
 ### Integration Permissions / WMS
 1. Verhalten mit test.perm.3.main: Ein Kind ist als "zu löschen" markiert
-1. Verhalten der Testfälle test.perm 1,2 und 4-6 wie erwartet?
+1. Verhalten der Testfälle test.perm 1,2 und 4-6 wie erwartet? JA
+
+### Print und External WM(T)S (test.prext.*)
+
+1. GetMap-Request auf Background-Layer
+1. GetMap-Request auf externen WMS
+1. GetMap-Request auf externen WMTS
+1. Alle obigen Testkonfigurationen kommen im "offiziellen" WMS und WFS Katalog (GetCapabilities ...) nicht vor.
+
 
 ## Stand der Testfälle bzgl. der Services
 

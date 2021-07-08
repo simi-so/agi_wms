@@ -7,13 +7,15 @@ tableview AS (
       'name', identifier,
       'type', 'layer',
       'title', title,
-      'attributes', attr_name_js,
+      'attributes', a.attr_names_json, 
       'queryable', TRUE 
     ) AS layer_json,
-    tv_id, 
+    tv.tv_id, 
     root_published
   FROM 
-    simi.trafo_wms_tableview_v
+    simi.trafo_wms_tableview_v tv
+  JOIN
+    simi.trafo_tableview_attr_geo_append_v a ON tv.tv_id = a.tv_id
 ),
 
 rasterview AS (

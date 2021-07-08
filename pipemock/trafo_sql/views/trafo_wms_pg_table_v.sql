@@ -3,7 +3,7 @@ DROP VIEW IF EXISTS simi.trafo_wms_pg_table_v;
 CREATE VIEW simi.trafo_wms_pg_table_v AS 
   SELECT 
     tbl.id AS  table_id,
-    (geo_field_name IS NOT NULL) AS has_geometry,
+    (geo_field_name IS NOT NULL AND geo_type IS NOT NULL AND geo_epsg_code IS NOT NULL) AS has_geometry,
     jsonb_build_object(
       'dbconnection', db_service_url,
       'schema', schema_name,
