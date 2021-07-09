@@ -11,6 +11,13 @@ tableview_nongeo_attr AS (
   SELECT
     table_view_id as tv_id,
     tf."name" as attr_name,
+    jsonb_strip_nulls(
+      jsonb_build_object(
+        'name', name,
+        'alias', alias,
+        'format', wms_fi_format      
+      )
+    ) AS attr_3props_obj,
     vf.sort 
   FROM 
     simi.simidata_view_field vf 
@@ -22,6 +29,9 @@ tableview_geo_attr as (
   SELECT  
     tv.id as tv_id,
     'geometry' AS attr_name,
+    jsonb_build_object(
+      'name', 'geometry'
+    ) AS attr_3props_obj,
     99999 AS sort
   FROM  
     simi.simi.simidata_table_view tv
@@ -36,14 +46,15 @@ tableview_geo_attr as (
 ),
 
 tableview_attr_union AS (
-  SELECT tv_id, attr_name, sort FROM tableview_nongeo_attr
+  SELECT tv_id, attr_name, attr_3props_obj, sort FROM tableview_nongeo_attr
   UNION ALL 
-  SELECT tv_id, attr_name, sort FROM tableview_geo_attr
+  SELECT tv_id, attr_name, attr_3props_obj, sort FROM tableview_geo_attr
 )
 
 SELECT 
   tv_id,
-  jsonb_agg(attr_name ORDER BY sort) AS attr_names_json
+  jsonb_agg(attr_name ORDER BY sort) AS attr_names_json,
+  jsonb_agg(attr_3props_obj ORDER BY sort) AS attr_3props_json
 FROM
   tableview_attr_union
 GROUP BY 

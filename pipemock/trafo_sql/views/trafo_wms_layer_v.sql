@@ -165,7 +165,9 @@ ext_wms_layerbase AS (
       'wms_url', url,
       'layers', el.identifier_list,
       'format', 'image/jpeg',
-      'srid', 2056
+      'srid', 2056,
+      'styles', '',
+      'featureCount', 300
     ) AS wms_datasource_json
   FROM
     simi.trafo_wms_dp_pubstate_v dp

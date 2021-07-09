@@ -50,9 +50,9 @@ task permJson(type:Exec){
 
 task up(type:Exec){
     dependsOn printQgs
-    dependsOn wfsQgs
+    //dependsOn wfsQgs
     dependsOn down
-    dependsOn wmsQgs
+    //dependsOn wmsQgs
     dependsOn ogcJson
     dependsOn permJson
     workingDir 'qgs_clust'

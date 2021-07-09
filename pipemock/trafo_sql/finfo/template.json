@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json",
+  "service": "feature-info",
+  "config": {
+    "default_qgis_server_url": "http://localhost:8001/ows/",
+    "default_info_template": "dummy default template"
+  },
+  "resources": {
+    "wms_services": [
+      {
+        "name": "wms",
+        "root_layer": {
+          "name": "ch.so.wms",
+          "layers": {"$trafo:list": "info.sql"}
+        }
+      }
+    ]
+  }
+}

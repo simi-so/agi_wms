@@ -145,6 +145,10 @@ Fragen:
 1. GetMap-Request auf externen WMTS
 1. Alle obigen Testkonfigurationen kommen im "offiziellen" WMS und WFS Katalog (GetCapabilities ...) nicht vor.
 
+### Feature Info (test.info.*)
+
+1. DSV mit Feature-Report und special Featureinfo mit Sql-Query und spezieller Anzeige (Jinya)
+1. Facadelayer mit einem Kind-DSV. Das DSV hat ein python-info hinterlegt
 
 ## Stand der Testfälle bzgl. der Services
 
@@ -161,3 +165,36 @@ Services (Später Spalten der Übersichtstabelle):
 * SO-Locator (LOC)
 
 Cross-Cutting: Map, Permissions
+
+Migration+: Leere Strings
+
+        /*
+        SELECT
+        *
+        FROM
+        simi.simi.simidata_table_field 
+        WHERE
+        wms_fi_format = ''
+        */
+
+        UPDATE 
+        simi.simi.simidata_table_field 
+        SET 
+        wms_fi_format = NULL 
+        WHERE
+        wms_fi_format = ''
+
+
+Todo:
+* qgs aufteilen in die zwei pods print und "wms wfs"
+* Weitermachen featureinfo: 
+  * Klären, welche Konfiguration für das Standardverhalten überhaupt notwendig ist
+  * Klären, wie das verhalten bezüglich Facadelayern (Gruppierungen) ist. Müssen alle Kinder eines Facadelayer konfigurirt sein?
+  * Klären, ob eine sowohl im Facadelayer wie auch "für sich" konfiguriert sein muss.
+  * Ticket schreiben zu allen feldern, welche base64 codiert werden sollen
+
+simi:
+* Template in spez fi muss wahrscheinlich nicht obligatorisch sein
+
+
+Freitag,9. Juli 6:20 - 11:35
