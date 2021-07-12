@@ -1,14 +1,5 @@
 WITH
 
-simi_trafo_wms_dp_pubstate_v AS (
-  SELECT 
-    * 
-  FROM
-    simi.trafo_wms_dp_pubstate_v
-  WHERE
-    identifier LIKE 'test.info%'
-),
-
 tv_with_geom AS (
   SELECT 
     attr_3props_json,
@@ -102,11 +93,12 @@ dsv AS (
         'feature_report', rep_name
       )
     ) AS dsv_json,
+    root_published,
     dsv.id AS dsv_id
   FROM
     simi.simidata_data_set_view dsv
   JOIN
-    simi_trafo_wms_dp_pubstate_v dp ON dsv.id = dp.dp_id
+    simi.trafo_wms_dp_pubstate_v dp ON dsv.id = dp.dp_id
   LEFT JOIN
     tv_with_geom tg ON dsv.id = tg.tv_id
   LEFT JOIN
@@ -134,18 +126,69 @@ facade AS (
     jsonb_build_object(
         'name', identifier,
         'title', COALESCE(title, identifier),
-        'layers', dsv_json
-    ) AS fl_json
+        'layers', dsv_json,
+        'hide_sublayers', TRUE
+    ) AS fl_json,
+    root_published,
+    fl.id AS fl_id
   FROM
     simi.simiproduct_facade_layer fl
   JOIN
-    simi_trafo_wms_dp_pubstate_v dp ON fl.id = dp.dp_id
+    simi.trafo_wms_dp_pubstate_v dp ON fl.id = dp.dp_id
   JOIN
     facade_dsv fd ON fl.id = fd.fl_id
   WHERE
     published IS TRUE
+),
+
+singleactor AS (
+  SELECT dsv_json AS sa_json, dsv_id AS sa_id FROM dsv
+  UNION ALL
+  SELECT fl_json AS sa_json, fl_id AS sa_id FROM facade
+),
+
+prodlist_sa AS (
+  SELECT
+    jsonb_agg(sa_json) AS sa_json,
+    pil.product_list_id AS pl_id
+  FROM
+    singleactor s
+  JOIN
+    simi.simiproduct_properties_in_list pil ON s.sa_id = pil.single_actor_id 
+  GROUP BY 
+    pil.product_list_id
+),
+
+layergroup AS (
+  SELECT
+    jsonb_build_object(
+        'name', identifier,
+        'title', COALESCE(title, identifier),
+        'layers', sa_json
+    ) AS lg_json,
+    root_published,
+    lg.id AS lg_id
+  FROM
+    simi.simiproduct_layer_group lg
+  JOIN
+    simi.trafo_wms_dp_pubstate_v dp ON lg.id = dp.dp_id
+  JOIN
+    prodlist_sa sa ON lg.id = sa.pl_id
+  WHERE
+    published IS TRUE
+),
+
+dataprod_union AS (
+  SELECT lg_json AS dp_json, root_published, lg_id AS dp_id FROM layergroup
+  UNION ALL 
+  SELECT fl_json AS dp_json, root_published, fl_id AS dp_id FROM facade
+  UNION ALL 
+  SELECT dsv_json AS dp_json, root_published, dsv_id AS dp_id FROM dsv
 )
 
-SELECT dsv_json AS sa_json FROM dsv
-UNION ALL
-SELECT fl_json AS sa_json FROM facade
+SELECT 
+  dp_json
+FROM
+  dataprod_union
+WHERE
+  root_published IS TRUE 

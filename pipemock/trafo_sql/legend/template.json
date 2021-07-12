@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json",
-  "service": "feature-info",
+  "$schema": "https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json",
+  "service": "legend",
   "config": {
     "default_qgis_server_url": "http://qgs/ows/"
   },
@@ -10,7 +10,8 @@
         "name": "wms",
         "root_layer": {
           "name": "ch.so.wms",
-          "layers": {"$trafo:list": "info.sql"}
+          "type": "layergroup",
+          "layers": {"$trafo:list": "legend.sql"}
         }
       }
     ]

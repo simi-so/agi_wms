@@ -12,8 +12,6 @@ services:
       - "../.gitignored/dbs/exchange:/tmp"
   qgs:
     image: sourcepole/qwc-qgis-server:2.18.28
-    environment:
-      - QGIS_SERVER_LOG_LEVEL=INFO
     ports:
       - "8081:80"
     volumes:
@@ -34,3 +32,30 @@ services:
       - "5013:9090"
     depends_on:
       - qgs
+  finfo:
+    image: sourcepole/qwc-feature-info-service:v2.0.6
+    environment:
+      - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
+      - JWT_COOKIE_CSRF_PROTECT=True
+      - FLASK_DEBUG=1
+      - SERVICE_MOUNTPOINT=/wms_fi
+    volumes:
+      - ../.gitignored/pipe_data/finfo://srv/qwc_service/config/default:ro
+    ports:
+      - "5015:9090"
+    depends_on:
+      - qgs
+  legend:
+    image: sourcepole/qwc-legend-service:v2.0.3
+    environment:
+      - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
+      - JWT_COOKIE_CSRF_PROTECT=True
+      - FLASK_DEBUG=1
+      - SERVICE_MOUNTPOINT=/wms_legend
+    volumes:
+      - ../.gitignored/pipe_data/legend://srv/qwc_service/config/default:ro
+    ports:
+      - "5016:9090"
+    depends_on:
+      - qgs
+

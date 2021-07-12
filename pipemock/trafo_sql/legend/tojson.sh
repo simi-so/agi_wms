@@ -5,8 +5,8 @@ path="\
   -c jdbc:postgresql://localhost:5433/simi \
   -u postgres -p postgres \
   -t $(pwd)/template.json \
-  -o $(pwd)/../../../.gitignored/pipe_data/multi/permissions.json \
-  -s https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json \
+  -o $(pwd)/../../../.gitignored/pipe_data/legend/legendConfig.json \
+  -s https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json \
   "
 #echo $path
 

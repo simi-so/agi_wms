@@ -38,23 +38,54 @@ task wfsQgs(type:Exec){
     commandLine './toWfsQgs.sh'
 }
 
-task ogcJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/ogc-service'
-    commandLine './tojson.sh'
-}
-
-task permJson(type:Exec){
+task generatePerm(type:Exec){
     workingDir 'pipemock/trafo_sql/permission'
     commandLine './tojson.sh'
 }
 
+task _ogcPerm(type:Copy, dependsOn:generatePerm){
+    from "$projectDir/.gitignored/pipe_data/multi/permissions.json"
+    into "$projectDir/.gitignored/pipe_data/ogc"
+}
+
+task ogcJson(type:Exec, dependsOn:_ogcPerm){
+    workingDir 'pipemock/trafo_sql/ogc-service'
+    commandLine './tojson.sh'
+}
+
+task _infoPerm(type:Copy, dependsOn:generatePerm){
+    from "$projectDir/.gitignored/pipe_data/multi/permissions.json"
+    into "$projectDir/.gitignored/pipe_data/finfo"
+}
+
+task fInfoJson(type:Exec, dependsOn:_infoPerm){
+    workingDir 'pipemock/trafo_sql/finfo'
+    commandLine './tojson.sh'
+}
+
+task _legendPerm(type:Copy, dependsOn:generatePerm){
+    from "$projectDir/.gitignored/pipe_data/multi/permissions.json"
+    into "$projectDir/.gitignored/pipe_data/legend"
+}
+
+task legendJson(type:Exec, dependsOn:_legendPerm){
+    workingDir 'pipemock/trafo_sql/legend'
+    commandLine './tojson.sh'
+}
+
+task dataProdJson(type:Exec){
+    workingDir 'pipemock/trafo_sql/dataprod'
+    commandLine './tojson.sh'
+}
+
 task up(type:Exec){
-    dependsOn printQgs
+    //dependsOn printQgs
     //dependsOn wfsQgs
     dependsOn down
-    //dependsOn wmsQgs
+    dependsOn wmsQgs
     dependsOn ogcJson
-    dependsOn permJson
+    dependsOn fInfoJson
+    dependsOn legendJson
     workingDir 'qgs_clust'
     commandLine 'docker-compose','up'
 }

@@ -185,6 +185,7 @@ Migration+: Leere Strings
         wms_fi_format = ''
 
 
+
 Todo:
 * qgs aufteilen in die zwei pods print und "wms wfs"
 * Weitermachen featureinfo: 
@@ -192,9 +193,17 @@ Todo:
   * Klären, wie das verhalten bezüglich Facadelayern (Gruppierungen) ist. Müssen alle Kinder eines Facadelayer konfigurirt sein?
   * Klären, ob eine sowohl im Facadelayer wie auch "für sich" konfiguriert sein muss.
   * Ticket schreiben zu allen feldern, welche base64 codiert werden sollen
+* trafo_wms_dp_pubstate_v filtern auf published=true und published nicht mehr zurückgeben
 
 simi:
 * Template in spez fi muss wahrscheinlich nicht obligatorisch sein
+* Geometriespalten manuell pflegbar machen
+* Bug bei Export qml (binary gewurbel am Ende)
+* Logging zurücksetzen
+
+sql2json:
+* Fehler vermeiden bei Schreiben auf nicht vorhandenes Verzeichnis (Option -o)
 
 
-Freitag,9. Juli 6:20 - 11:35
+Freitag,9. Juli 6:20 - 11:40
+- 18.30
