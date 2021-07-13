@@ -1,6 +1,6 @@
 
 task wmsJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/wms'
+    workingDir 'pipemock/trafo_sql/qgs_wms'
     commandLine './tojson.sh'
 }
 
@@ -10,7 +10,7 @@ task printJson(type:Exec){
 }
 
 task wfsJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/wfs'
+    workingDir 'pipemock/trafo_sql/qgs_wfs'
     commandLine './tojson.sh'
 }
 
@@ -55,11 +55,11 @@ task ogcJson(type:Exec, dependsOn:_ogcPerm){
 
 task _infoPerm(type:Copy, dependsOn:generatePerm){
     from "$projectDir/.gitignored/pipe_data/multi/permissions.json"
-    into "$projectDir/.gitignored/pipe_data/finfo"
+    into "$projectDir/.gitignored/pipe_data/feat_info"
 }
 
-task fInfoJson(type:Exec, dependsOn:_infoPerm){
-    workingDir 'pipemock/trafo_sql/finfo'
+task featInfoJson(type:Exec, dependsOn:_infoPerm){
+    workingDir 'pipemock/trafo_sql/feat_info'
     commandLine './tojson.sh'
 }
 
@@ -83,9 +83,9 @@ task up(type:Exec){
     //dependsOn wfsQgs
     dependsOn down
     dependsOn wmsQgs
-    dependsOn ogcJson
-    dependsOn fInfoJson
-    dependsOn legendJson
+    //dependsOn ogcJson
+    //dependsOn featInfoJson
+    //dependsOn legendJson
     workingDir 'qgs_clust'
     commandLine 'docker-compose','up'
 }

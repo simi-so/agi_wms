@@ -10,11 +10,9 @@ JOIN
 JOIN
   simi.simiproduct_data_product dp ON tv.id = dp.id
 JOIN
-  simi.trafo_wms_pg_table_v t ON tv.postgres_table_id = t.table_id 
+  simi.trafo_wms_geotable_v t ON tv.postgres_table_id = t.table_id 
 JOIN
   simi.trafo_tableview_attr_geo_append_v a ON dsv.id = a.tv_id
 WHERE
-    dsv.raw_download IS TRUE
-  AND
-    t.has_geometry IS TRUE 
+  dsv.raw_download IS TRUE
 

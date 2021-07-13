@@ -3,7 +3,11 @@ DROP VIEW IF EXISTS simi.trafo_tableview_attr_geo_append_v;
 
 CREATE VIEW simi.trafo_tableview_attr_geo_append_v AS 
 
-/* Gibt die Attribute einer Tableview inkl. Geometrie-Platzhalterspalte zurück.
+/* Gibt die Attribute (Spalten) einer Tableview inkl. Geometrie-Platzhalterspalte zurück.
+ * 
+ * attr_names_json: Array von Strings der technischen Attributnamen
+ * attr_3props_json: Array mit Attribut-Objekten. 
+ * Jedes Objekt mit den Eigenschaften name, alias, format (Null-Werte werden mit jsonb_strip_nulls(...) entfernt). 
  * */
 WITH 
 

@@ -8,5 +8,5 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - "../.gitignored/dbs/simi_pgdat/.pgdata:/var/lib/postgresql/data/pgdata"
+      - "../.gitignored/dbs/simi_pgdat_pubonly/.pgdata:/var/lib/postgresql/data/pgdata"
       - "../.gitignored/dbs/exchange:/tmp"

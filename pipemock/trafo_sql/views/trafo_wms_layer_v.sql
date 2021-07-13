@@ -5,9 +5,7 @@ CREATE VIEW simi.trafo_wms_layer_v AS
 /*
  * Gibt für den WMS die Dataproducts (DP) mit ihren jeweiligen Detailinformationen aus.
  * 
- * Mittels Flag "print_only" wird unterschieden, ob das DP nur im Print-WMS erscheint. 
- * 
- * $td: simi.trafo_wms_tableview_v einbinden, und Abhängigkeit auf simi.trafo_wms_tableview_v entfernen
+ * Mittels Flag "print_or_ext" wird unterschieden, ob das DP nur im "Print-WMS" erscheint. 
  */
 WITH
 
@@ -18,31 +16,27 @@ productlist_children AS ( -- Alle publizierten Kinder einer Productlist, sortier
   FROM 
     simi.simiproduct_properties_in_list pil 
   JOIN 
-    simi.trafo_wms_dp_pubstate_v dp ON pil.single_actor_id = dp.dp_id
-  WHERE 
-    dp.published IS TRUE 
+    simi.trafo_wms_published_dp_v dp ON pil.single_actor_id = dp.dp_id
   GROUP BY 
     product_list_id  
 ),
 
-productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_only = TRUE, Layergroup.print_only = FALSE 
+productlist AS ( -- Alle publizierten Productlists, mit ihren publizierten Kindern. (Background-)Map.print_or_ext = TRUE, Layergroup.print_or_ext = FALSE 
   SELECT 
     identifier,
-    (m.id IS NOT NULL) AS print_only, 
+    (m.id IS NOT NULL) AS print_or_ext, 
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
-      'title', title,
+      'title', title_ident,
       'sublayers', ident_json
     ) AS layer_json
   FROM 
-    simi.trafo_wms_dp_pubstate_v dp
+    simi.trafo_wms_published_dp_v dp
   JOIN
     productlist_children sa ON dp.dp_id = sa.product_list_id
   LEFT JOIN 
     simi.simiproduct_map m ON dp.dp_id = m.id
-  WHERE
-    published IS TRUE 
 ),
 
 facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines Facadelayer, sortiert nach pif.sort
@@ -52,9 +46,7 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
   FROM 
     simi.simiproduct_properties_in_facade pif
   JOIN 
-    simi.trafo_wms_dp_pubstate_v dp ON pif.data_set_view_id = dp.dp_id
-  WHERE 
-    dp.published IS TRUE 
+    simi.trafo_wms_published_dp_v dp ON pif.data_set_view_id = dp.dp_id
   GROUP BY 
     facade_layer_id  
 ),
@@ -62,21 +54,19 @@ facadelayer_children AS ( -- Alle direkt oder indirekt publizierten Kinder eines
 facadelayer AS (
   SELECT 
     identifier,
-    FALSE AS print_only,
+    FALSE AS print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'productset',
-      'title', title,
+      'title', title_ident,
       'sublayers', ident_json
     ) AS layer_json
   FROM 
     simi.simiproduct_facade_layer fl
   JOIN 
-    simi.trafo_wms_dp_pubstate_v dp ON fl.id = dp.dp_id
+    simi.trafo_wms_published_dp_v dp ON fl.id = dp.dp_id
   JOIN
     facadelayer_children dsv ON dp.dp_id = dsv.facade_layer_id
-  WHERE 
-    dp.published IS TRUE 
 ),
 
 /*
@@ -112,12 +102,12 @@ dsv_qml_assetfiles AS (
 vector_layer AS (
   SELECT 
     identifier,
-    FALSE AS print_only,
+    FALSE AS print_or_ext,
     jsonb_strip_nulls(jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'vector',
-      'title', title,
+      'title', title_ident,
       'postgis_datasource', tbl_json,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'qml_assets', COALESCE(assetfiles_json, jsonb_build_array()), --$td COALESCE entfernen
@@ -126,9 +116,9 @@ vector_layer AS (
   FROM
     simi.trafo_wms_tableview_v tv
   JOIN
-    simi.simidata_data_set_view dsv ON tv.tv_id = dsv.id 
+    simi.simidata_data_set_view dsv ON tv.tv_id = dsv.id
   JOIN 
-    simi.trafo_wms_pg_table_v tbl ON tv.postgres_table_id = tbl.table_id 
+    simi.trafo_wms_geotable_v tbl ON tv.postgres_table_id = tbl.table_id 
   LEFT JOIN 
     dsv_qml_assetfiles files ON tv.tv_id = files.dsv_id
 ),
@@ -136,31 +126,29 @@ vector_layer AS (
 raster_layer AS (
   SELECT 
     identifier,
-    FALSE AS print_only,
+    FALSE AS print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'raster',
-      'title', title,
+      'title', title_ident,
       'qml_base64', encode(convert_to(style_server, 'UTF8'), 'base64'),
       'raster_datasource', jsonb_build_object('datasource', rds."path", 'srid', 2056) 
     ) AS layer_json
   FROM
-    simi.trafo_wms_dp_pubstate_v dp
+    simi.trafo_wms_published_dp_v dp
   JOIN 
     simi.simidata_data_set_view dsv ON dp.dp_id = dsv.id
   JOIN 
     simi.simidata_raster_view rv ON dsv.id = rv.id
   JOIN 
     simi.simidata_raster_ds rds ON rv.raster_ds_id = rds.id   
-  WHERE
-    dp.published IS TRUE 
 ),
 
 ext_wms_layerbase AS (
   SELECT  
     identifier,
-    title,  
+    title_ident,  
     jsonb_build_object(
       'wms_url', url,
       'layers', el.identifier_list,
@@ -170,26 +158,24 @@ ext_wms_layerbase AS (
       'featureCount', 300
     ) AS wms_datasource_json
   FROM
-    simi.trafo_wms_dp_pubstate_v dp
+    simi.trafo_wms_published_dp_v dp
   JOIN 
     simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
   JOIN
     simi.simiproduct_external_map_service es ON el.service_id = es.id
   WHERE 
     service_type = 'WMS'
-  AND 
-    dp.published IS TRUE
 ),
 
 ext_wms AS (
   SELECT 
     identifier,
-    TRUE AS print_only,
+    TRUE AS print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'wms',
-      'title', title,
+      'title', title_ident,
       'wms_datasource', wms_datasource_json
     ) AS layer_json
   FROM
@@ -199,7 +185,7 @@ ext_wms AS (
 ext_wmts_layerbase AS (
   SELECT  
     identifier,
-    title,   
+    title_ident,   
     jsonb_build_object(
       'wmts_capabilities_url', url,
       'layer', el.identifier_list,
@@ -209,26 +195,24 @@ ext_wmts_layerbase AS (
       'srid', 2056
     ) AS wmts_datasource_json
   FROM
-    simi.trafo_wms_dp_pubstate_v dp
+    simi.trafo_wms_published_dp_v dp
   JOIN 
     simi.simiproduct_external_map_layers el ON dp.dp_id = el.id
   JOIN
     simi.simiproduct_external_map_service es ON el.service_id = es.id
   WHERE 
-      dp.published IS TRUE 
-    AND 
-      service_type = 'WMTS'
+    service_type = 'WMTS'
 ),
 
 ext_wmts AS (
   SELECT 
     identifier,
-    TRUE AS print_only,
+    TRUE AS print_or_ext,
     jsonb_build_object(
       'name', identifier,
       'type', 'layer',
       'datatype', 'wmts',
-      'title', title,
+      'title', title_ident,
       'wmts_datasource', wmts_datasource_json
     ) AS layer_json
   FROM
@@ -236,22 +220,22 @@ ext_wmts AS (
 ),
 
 layer_union AS (
-  SELECT identifier, print_only, layer_json FROM productlist
+  SELECT identifier, print_or_ext, layer_json FROM productlist
   UNION ALL 
-  SELECT identifier, print_only, layer_json FROM facadelayer
+  SELECT identifier, print_or_ext, layer_json FROM facadelayer
   UNION ALL 
-  SELECT identifier, print_only, layer_json FROM vector_layer
+  SELECT identifier, print_or_ext, layer_json FROM vector_layer
   UNION ALL 
-  SELECT identifier, print_only, layer_json FROM raster_layer
+  SELECT identifier, print_or_ext, layer_json FROM raster_layer
   UNION ALL 
-  SELECT identifier, print_only, layer_json FROM ext_wms
+  SELECT identifier, print_or_ext, layer_json FROM ext_wms
   UNION ALL 
-  SELECT identifier, print_only, layer_json FROM ext_wmts
+  SELECT identifier, print_or_ext, layer_json FROM ext_wmts
 )
 
 SELECT 
   identifier,
-  print_only, 
+  print_or_ext, 
   layer_json 
 FROM
   layer_union

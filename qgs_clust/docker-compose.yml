@@ -32,7 +32,7 @@ services:
       - "5013:9090"
     depends_on:
       - qgs
-  finfo:
+  feat_info:
     image: sourcepole/qwc-feature-info-service:v2.0.6
     environment:
       - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
@@ -40,7 +40,7 @@ services:
       - FLASK_DEBUG=1
       - SERVICE_MOUNTPOINT=/wms_fi
     volumes:
-      - ../.gitignored/pipe_data/finfo://srv/qwc_service/config/default:ro
+      - ../.gitignored/pipe_data/feat_info://srv/qwc_service/config/default:ro
     ports:
       - "5015:9090"
     depends_on:

@@ -1,1 +1,0 @@
-docker exec -it dbs_simi_1 /bin/bash

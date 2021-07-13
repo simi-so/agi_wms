@@ -1,6 +1,10 @@
 
 WITH 
 
+dummy_fields AS (
+  
+)
+
 tv_pgtable_props AS ( --$td merge TO view simi.trafo_wms_pg_table_v, adapt wms SQL
   SELECT 
     tv.id AS tv_id,
@@ -62,7 +66,8 @@ dsv AS (
         'keywords', jsonb_build_array(),
         'contacts', CAST('[{"organisation":{"id":-99,"name":"dummy contact org"}}]' AS jsonb)     
       )
-    ) AS dsv_json,    
+    ) AS dsv_json,  
+    root_published,
     dsv.id AS dsv_id
   FROM
     simi.simi.simidata_data_set_view dsv
@@ -79,6 +84,13 @@ dsv AS (
   WHERE 
     published IS TRUE 
 ),
+
+facade AS (
+  
+  
+),
+
+
 
 root_layer AS (
   SELECT
