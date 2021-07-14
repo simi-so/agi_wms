@@ -1,4 +1,4 @@
-def inBaseDir = '/home/bjsvwjek/code/agi_wms/pipemock/trafo_sql'
+def inBaseDir = '/home/bjsvwjek/code/pipelines/api_webgisclient/sql2json'
 
 def outBaseDir = projectDir.toString() + '/.gitignored/pipe_data'
 def baseCmd = [
@@ -9,7 +9,7 @@ def baseCmd = [
 
 task wmsJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/qgs_wms/template.json',
+        '-t',  inBaseDir + '/qgis-server-wms/template.json',
         '-o',  outBaseDir + '/qgs/qgs_wms.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
@@ -17,7 +17,7 @@ task wmsJson(type:Exec){
 
 task printJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/qwc_print/template.json',
+        '-t',  inBaseDir + '/webgis-print/template.json',
         '-o',  outBaseDir + '/qgs/qwc_print.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
@@ -25,7 +25,7 @@ task printJson(type:Exec){
 
 task wfsJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/qgs_wfs/template.json',
+        '-t',  inBaseDir + '/qgis-server-wfs/template.json',
         '-o',  outBaseDir + '/qgs/qgs_wfs.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json'
         ]
@@ -77,7 +77,7 @@ task _infoPerm(type:Copy, dependsOn:generatePerm){
 
 task featInfoJson(type:Exec, dependsOn:_infoPerm){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/feat_info/template.json',
+        '-t',  inBaseDir + '/feature-info-service/template.json',
         '-o',  outBaseDir + '/feat_info/featureInfoConfig.json', 
         '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json'
         ]
@@ -90,7 +90,7 @@ task _legendPerm(type:Copy, dependsOn:generatePerm){
 
 task legendJson(type:Exec, dependsOn:_legendPerm){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/legend/template.json',
+        '-t',  inBaseDir + '/legend-service/template.json',
         '-o',  outBaseDir + '/legend/legendConfig.json', 
         '-s', 'https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json'
         ]
