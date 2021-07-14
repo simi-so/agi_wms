@@ -1,23 +1,34 @@
+def inBaseDir = '/home/bjsvwjek/code/agi_wms/pipemock/trafo_sql'
+
+def outBaseDir = projectDir.toString() + '/.gitignored/pipe_data'
+def baseCmd = [
+    'java', '-Dorg.slf4j.simpleLogger.defaultLogLevel=info', '-jar', projectDir.toString() + '/.gitignored/pipe_bin/sql2json/sql2json.jar',
+    '-c', 'jdbc:postgresql://localhost:5433/simi',
+    '-u', 'postgres', '-p', 'postgres'
+]
 
 task wmsJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/qgs_wms'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/qgs_wms/template.json',
+        '-o',  outBaseDir + '/qgs/qgs_wms.json', 
+        '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
+        ]
 }
 
 task printJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/qwc_print'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/qwc_print/template.json',
+        '-o',  outBaseDir + '/qgs/qwc_print.json', 
+        '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
+        ]
 }
 
 task wfsJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/qgs_wfs'
-    commandLine './tojson.sh'
-}
-
-task down(type:Exec){
-    workingDir 'qgs_clust'
-    commandLine 'docker-compose','down'
-    ignoreExitValue true
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/qgs_wfs/template.json',
+        '-o',  outBaseDir + '/qgs/qgs_wfs.json', 
+        '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json'
+        ]
 }
 
 task wmsQgs(type:Exec){
@@ -39,8 +50,11 @@ task wfsQgs(type:Exec){
 }
 
 task generatePerm(type:Exec){
-    workingDir 'pipemock/trafo_sql/permission'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/permission/template.json',
+        '-o',  outBaseDir + '/multi/permissions.json', 
+        '-s', 'https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json'
+        ]
 }
 
 task _ogcPerm(type:Copy, dependsOn:generatePerm){
@@ -49,8 +63,11 @@ task _ogcPerm(type:Copy, dependsOn:generatePerm){
 }
 
 task ogcJson(type:Exec, dependsOn:_ogcPerm){
-    workingDir 'pipemock/trafo_sql/ogc-service'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/ogc-service/template.json',
+        '-o',  outBaseDir + '/ogc/ogcConfig.json', 
+        '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-ogc-service/v2/schemas/qwc-ogc-service.json'
+        ]
 }
 
 task _infoPerm(type:Copy, dependsOn:generatePerm){
@@ -59,8 +76,11 @@ task _infoPerm(type:Copy, dependsOn:generatePerm){
 }
 
 task featInfoJson(type:Exec, dependsOn:_infoPerm){
-    workingDir 'pipemock/trafo_sql/feat_info'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/feat_info/template.json',
+        '-o',  outBaseDir + '/feat_info/featureInfoConfig.json', 
+        '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json'
+        ]
 }
 
 task _legendPerm(type:Copy, dependsOn:generatePerm){
@@ -69,23 +89,27 @@ task _legendPerm(type:Copy, dependsOn:generatePerm){
 }
 
 task legendJson(type:Exec, dependsOn:_legendPerm){
-    workingDir 'pipemock/trafo_sql/legend'
-    commandLine './tojson.sh'
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/legend/template.json',
+        '-o',  outBaseDir + '/legend/legendConfig.json', 
+        '-s', 'https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json'
+        ]
 }
 
-task dataProdJson(type:Exec){
-    workingDir 'pipemock/trafo_sql/dataprod'
-    commandLine './tojson.sh'
+task down(type:Exec){
+    workingDir 'qgs_clust'
+    commandLine 'docker-compose','down'
+    ignoreExitValue true
 }
 
 task up(type:Exec){
-    //dependsOn printQgs
-    //dependsOn wfsQgs
+    dependsOn printQgs
+    dependsOn wfsQgs
     dependsOn down
     dependsOn wmsQgs
-    //dependsOn ogcJson
-    //dependsOn featInfoJson
-    //dependsOn legendJson
+    dependsOn ogcJson
+    dependsOn featInfoJson
+    dependsOn legendJson
     workingDir 'qgs_clust'
     commandLine 'docker-compose','up'
 }

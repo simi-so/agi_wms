@@ -1,0 +1,32 @@
+@startuml
+
+skinparam linetype straight
+
+package "WMS und Print"{
+
+    together {
+        [QGIS-Server] as qgs
+        () WFS as wfsi
+        wfsi - qgs
+    }
+
+    together {
+        [OGC-Service] as ogc
+        () WFS as ogci
+        ogci - ogc
+    }
+    
+    ogc --> wfsi
+}
+
+[WFS Client] as cl
+
+database "Geo-DB" {
+    [data] as data
+}
+
+cl --> ogci
+
+qgs --> data
+
+@enduml

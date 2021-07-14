@@ -1,0 +1,76 @@
+@startuml
+
+skinparam linetype straight
+
+package "WMS und Print"{
+
+    together {
+        [QGIS-Server] as qgs
+        () WMS as wmi
+        wmi -left- qgs
+        
+        () Print as pr2
+        pr2 - qgs
+    }
+    
+    together {
+        [Legend-Service] as ls
+        () Legend as lsi
+        lsi -right- ls
+    }
+    
+    together {
+        [Feature-Info] as fi
+        () FInfo as fii
+        fii -left- fi
+    }
+
+    together {
+        [OGC-Service] as ogc
+        () WMS as ogci
+        ogci -left- ogc
+        
+        () Print as pr1
+        pr1 - ogc
+    }
+    
+    ogci ..> fii
+    ogci .right.> lsi
+    
+    ogc --> wmi
+    ogc --> pr2
+    
+    fi --> wmi
+    ls --> wmi
+}
+
+[Web GIS Client] as wgc
+
+[WMS Client] as cl
+
+together {
+    [Print-Service] as prs
+    () Print as pr3
+    pr3 - prs
+}
+
+database "Geo-DB" {
+    [data] as data
+}
+
+() . as c1
+
+cl --> c1
+
+wgc --> c1
+wgc --> pr3
+
+prs --> pr1
+
+c1 --> ogci
+c1 --> lsi
+c1 --> fii
+
+qgs --> data
+
+@enduml
