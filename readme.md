@@ -202,16 +202,7 @@ simi:
 * Logging zurücksetzen
 
 sql2json:
-* Fehler vermeiden bei Schreiben auf nicht vorhandenes Verzeichnis (Option -o)
-
-
-Freitag,9. Juli 6:20 - 11:40
-- 18.30
-
-
-          "service": "http://localhost:5013/ogc/wms",
-          "feature_info": "http://localhost:5015/wms_fi/wms",
-          "legend": "http://localhost:5016/wms_legend/wms"
+* Info-Logoutput der Ausgibt, welches template verarbeitet wird (mit Pfad) (-i)
 
 Todo:
 * Sortierung der Ebenen

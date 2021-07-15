@@ -1,0 +1,40 @@
+def inBaseDir = '/home/bjsvwjek/code/pipelines/api_webgisclient/sql2json/templates'
+
+def outBaseDir = projectDir.getParent().toString() + '/.gitignored/other_data'
+def baseCmd = [
+    'java', '-Dorg.slf4j.simpleLogger.defaultLogLevel=info', '-jar', projectDir.getParent().toString() + '/.gitignored/pipe_bin/sql2json/sql2json.jar',
+    '-c', 'jdbc:postgresql://localhost:5433/simi',
+    '-u', 'postgres', '-p', 'postgres'
+]
+
+task _dprodPerm(type:Copy){
+    from projectDir.getParent().toString() + '/.gitignored/pipe_data/multi/permissions.json'
+    into outBaseDir + '/dataprod'
+}
+
+task dprodJson(type:Exec, dependsOn:_dprodPerm){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/dataproduct-service/template.json',
+        '-o',  outBaseDir + '/dataprod/dataproductConfig.json', 
+        '-s', 'https://raw.githubusercontent.com/qwc-services/sogis-dataproduct-service/master/schemas/sogis-dataproduct-service.json'
+        ]
+}
+
+task searchJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/search-service/template.json',
+        '-o',  outBaseDir + '/search/searchConfig.json', 
+        '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-fulltext-search-service/master/schemas/qwc-search-service.json'
+        ]
+}
+
+task down(type:Exec){
+    commandLine 'docker-compose','down'
+    ignoreExitValue true
+}
+
+task up(type:Exec){
+    dependsOn down
+    dependsOn dprodJson
+    commandLine 'docker-compose','up'
+}

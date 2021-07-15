@@ -1,4 +1,4 @@
-def inBaseDir = '/home/bjsvwjek/code/pipelines/api_webgisclient/sql2json'
+def inBaseDir = '/home/bjsvwjek/code/pipelines/api_webgisclient/sql2json/templates'
 
 def outBaseDir = projectDir.toString() + '/.gitignored/pipe_data'
 def baseCmd = [
