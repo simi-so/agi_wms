@@ -200,9 +200,23 @@ simi:
 * Geometriespalten manuell pflegbar machen
 * Bug bei Export qml (binary gewurbel am Ende)
 * Logging zurücksetzen
+* CCC-Config: Map-FK Fehler korrigieren
 
 sql2json:
 * Info-Logoutput der Ausgibt, welches template verarbeitet wird (mit Pfad) (-i)
+* Column-Type logging herunterstufen
+
+    [main] INFO ch.so.agi.sql2json.Configuration - Using param value from commandline for -u
+    [main] INFO ch.so.agi.sql2json.Configuration - Using param value from commandline for -p
+    [main] INFO ch.so.agi.sql2json.tag.ListTag - Column type: int '1111' name 'jsonb'
+    [main] INFO ch.so.agi.sql2json.tag.ListTag - ccc_client.sql: Processed 2 rows.
+    [main] INFO ch.so.agi.sql2json.tag.ListTag - execSql()
+    [main] INFO ch.so.agi.sql2json.tag.ListTag - Column type: int '1111' name 'jsonb'
+    [main] INFO ch.so.agi.sql2json.tag.ListTag - zoomto_filter.sql: Processed 4 rows.
+    [main] INFO ch.so.agi.sql2json.Application - Output json written to /home/bjsvwjek/code/agi_wms/.gitignored/other_data/ccc/cccConfig.json
+    [main] INFO ch.so.agi.sql2json.Configuration - Using param value from commandline for -s
+    [main] INFO ch.so.agi.sql2json.Application - Validating against schema https://github.com/qwc-services/sogis-ccc-config/raw/master/schemas/sogis-ccc-config.json
+    [main] INFO ch.so.agi.sql2json.validation.Validator - Validation against json schema passed.
 
 Todo:
 * Sortierung der Ebenen

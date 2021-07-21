@@ -28,6 +28,22 @@ task searchJson(type:Exec){
         ]
 }
 
+task mapJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/map-viewer/template.json',
+        '-o',  outBaseDir + '/map-viewer/mapViewerConfig.json', 
+        '-s', 'https://github.com/qwc-services/qwc-map-viewer/raw/master/schemas/qwc-map-viewer.json'
+        ]
+}
+
+task cccJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/ccc-config/template.json',
+        '-o',  outBaseDir + '/ccc/cccConfig.json', 
+        '-s', 'https://github.com/qwc-services/sogis-ccc-config/raw/master/schemas/sogis-ccc-config.json'
+        ]
+}
+
 task down(type:Exec){
     commandLine 'docker-compose','down'
     ignoreExitValue true
