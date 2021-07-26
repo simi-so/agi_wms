@@ -197,7 +197,9 @@ Todo:
 
 simi:
 * Template in spez fi muss wahrscheinlich nicht obligatorisch sein
-* Geometriespalten manuell pflegbar machen
+* Geometriespalten 
+  * manuell pflegbar machen - Falls einfach möglch farblich hinterlegen (orange), damit dies in der Regel nicht gemacht wird
+  * Bei Tabellen mit mehreren Geometrien die Informationen Komma-Separiert in die Felder aufnehmen - Mit Ausrufezeichen zu Beginn oder so
 * Bug bei Export qml (binary gewurbel am Ende)
 * Logging zurücksetzen
 * CCC-Config: Map-FK Fehler korrigieren

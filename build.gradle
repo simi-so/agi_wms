@@ -9,7 +9,7 @@ def baseCmd = [
 
 task wmsJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/qgis-server-wms/template.json',
+        '-t',  inBaseDir + '/wms-qgs-content/template.json',
         '-o',  outBaseDir + '/qgs/qgs_wms.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
@@ -51,7 +51,7 @@ task wfsQgs(type:Exec){
 
 task generatePerm(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/permission/template.json',
+        '-t',  inBaseDir + '/services-unified-permissions/template.json',
         '-o',  outBaseDir + '/multi/permissions.json', 
         '-s', 'https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json'
         ]
