@@ -9,7 +9,7 @@ def baseCmd = [
 
 task wmsJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/wms-qgs-content/template.json',
+        '-t',  inBaseDir + '/wms-qgs-content/_dev_template.json',
         '-o',  outBaseDir + '/qgs/qgs_wms.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
@@ -17,15 +17,15 @@ task wmsJson(type:Exec){
 
 task printJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/webgis-print/template.json',
-        '-o',  outBaseDir + '/qgs/qwc_print.json', 
+        '-t',  inBaseDir + '/print-qgs-content/_dev_template.json',
+        '-o',  outBaseDir + '/qgs/qgs_print.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
 }
 
 task wfsJson(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/qgis-server-wfs/template.json',
+        '-t',  inBaseDir + '/wfs-qgs-content/_dev_template.json',
         '-o',  outBaseDir + '/qgs/qgs_wfs.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wfs-qgs-content.json'
         ]
@@ -51,7 +51,7 @@ task wfsQgs(type:Exec){
 
 task generatePerm(type:Exec){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/services-unified-permissions/template.json',
+        '-t',  inBaseDir + '/services-unified-permissions/_dev_template.json',
         '-o',  outBaseDir + '/multi/permissions.json', 
         '-s', 'https://github.com/qwc-services/qwc-services-core/raw/master/schemas/qwc-services-unified-permissions.json'
         ]
@@ -64,9 +64,9 @@ task _ogcPerm(type:Copy, dependsOn:generatePerm){
 
 task ogcJson(type:Exec, dependsOn:_ogcPerm){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/ogc-service/template.json',
+        '-t',  inBaseDir + '/ogc-service/_dev_template.json',
         '-o',  outBaseDir + '/ogc/ogcConfig.json', 
-        '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-ogc-service/v2/schemas/qwc-ogc-service.json'
+        '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-ogc-service/master/schemas/qwc-ogc-service.json'
         ]
 }
 
@@ -77,7 +77,7 @@ task _infoPerm(type:Copy, dependsOn:generatePerm){
 
 task featInfoJson(type:Exec, dependsOn:_infoPerm){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/feature-info-service/template.json',
+        '-t',  inBaseDir + '/feature-info-service/_dev_template.json',
         '-o',  outBaseDir + '/feat_info/featureInfoConfig.json', 
         '-s', 'https://raw.githubusercontent.com/qwc-services/qwc-feature-info-service/master/schemas/qwc-feature-info-service.json'
         ]
@@ -90,7 +90,7 @@ task _legendPerm(type:Copy, dependsOn:generatePerm){
 
 task legendJson(type:Exec, dependsOn:_legendPerm){
     commandLine baseCmd + [
-        '-t',  inBaseDir + '/legend-service/template.json',
+        '-t',  inBaseDir + '/legend-service/_dev_template.json',
         '-o',  outBaseDir + '/legend/legendConfig.json', 
         '-s', 'https://github.com/qwc-services/qwc-legend-service/raw/master/schemas/qwc-legend-service.json'
         ]
@@ -103,8 +103,8 @@ task down(type:Exec){
 }
 
 task up(type:Exec){
-    dependsOn printQgs
-    dependsOn wfsQgs
+    //dependsOn printQgs
+    //dependsOn wfsQgs
     dependsOn down
     dependsOn wmsQgs
     dependsOn ogcJson

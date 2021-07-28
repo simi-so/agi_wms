@@ -33,7 +33,7 @@ services:
     depends_on:
       - qgs
   feat_info:
-    image: sourcepole/qwc-feature-info-service:v2.0.6
+    image: sourcepole/qwc-feature-info-service:v2.0.7
     environment:
       - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
       - JWT_COOKIE_CSRF_PROTECT=True
