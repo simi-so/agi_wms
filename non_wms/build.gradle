@@ -57,6 +57,16 @@ task printJson(type:Exec){
         ]
 }
 
+task dServJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/data-service/template.json',
+        '-o',  outBaseDir + '/dserv/dataConfig.json', 
+        '-s', 'https://github.com/qwc-services/qwc-data-service/raw/master/schemas/qwc-data-service.json'
+        ]
+}
+
+
+
 task up(type:Exec){
     dependsOn down
     dependsOn dprodJson
