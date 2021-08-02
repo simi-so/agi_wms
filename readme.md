@@ -195,5 +195,3 @@ Todo SIMI:
 
 
 
-dbname='pub' host=postgis port=5432 user='postgres' password='postgres'
-

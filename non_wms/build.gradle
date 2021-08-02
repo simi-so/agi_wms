@@ -49,6 +49,14 @@ task down(type:Exec){
     ignoreExitValue true
 }
 
+task printJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/print-service/_dev_template.json',
+        '-o',  outBaseDir + '/print/printConfig.json', 
+        '-s', 'https://github.com/qwc-services/qwc-print-service/raw/master/schemas/qwc-print-service.json'
+        ]
+}
+
 task up(type:Exec){
     dependsOn down
     dependsOn dprodJson
