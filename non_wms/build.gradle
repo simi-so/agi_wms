@@ -65,10 +65,18 @@ task dServJson(type:Exec){
         ]
 }
 
+task repJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/document-service/template.json',
+        '-o',  outBaseDir + '/report/documentConf.json', 
+        '-s', 'https://github.com/qwc-services/qwc-document-service/raw/master/schemas/qwc-document-service.json'
+        ]
+}
+
 
 
 task up(type:Exec){
     dependsOn down
-    dependsOn dprodJson
+    dependsOn repJson
     commandLine 'docker-compose','up'
 }

@@ -58,4 +58,17 @@ services:
       - "5016:9090"
     depends_on:
       - qgs
+  print:
+    image: sourcepole/qwc-print-service:v2.0.2
+    environment:
+      - JWT_SECRET_KEY=c931b344-d246-4a67-8d02-271c0e649627
+      - JWT_COOKIE_CSRF_PROTECT=True
+      - FLASK_DEBUG=1
+      - SERVICE_MOUNTPOINT=/print
+      - OGC_SERVICE_URL=http://ogc:9090/ogc/
+      - QGIS_SERVER_VERSION=2.18.19
+    volumes:
+      - ../.gitignored/other_data/print://srv/qwc_service/config/default:ro
+    ports:
+      - "5019:9090"
 

@@ -18,7 +18,7 @@ task wmsJson(type:Exec){
 task printJson(type:Exec){
     commandLine baseCmd + [
         '-t',  inBaseDir + '/print-qgs-content/_dev_template.json',
-        '-o',  outBaseDir + '/qgs/qgs_print.json', 
+        '-o',  outBaseDir + '/qgs/qwc_print.json', 
         '-s', 'https://github.com/simi-so/json2qgs/raw/master/schemas/sogis-wms-qgs-content.json'
         ]
 }
@@ -96,6 +96,14 @@ task legendJson(type:Exec, dependsOn:_legendPerm){
         ]
 }
 
+task printSrvJson(type:Exec){
+    commandLine baseCmd + [
+        '-t',  inBaseDir + '/print-service/_dev_template.json',
+        '-o',  outBaseDir + '/print/printConfig.json', 
+        '-s', 'https://github.com/qwc-services/qwc-print-service/raw/master/schemas/qwc-print-service.json'
+        ]
+}
+
 task down(type:Exec){
     workingDir 'qgs_clust'
     commandLine 'docker-compose','down'
@@ -103,13 +111,14 @@ task down(type:Exec){
 }
 
 task up(type:Exec){
-    //dependsOn printQgs
+    dependsOn printQgs
     //dependsOn wfsQgs
     dependsOn down
     dependsOn wmsQgs
     dependsOn ogcJson
-    dependsOn featInfoJson
-    dependsOn legendJson
+    dependsOn printSrvJson
+    //dependsOn featInfoJson
+    //dependsOn legendJson
     workingDir 'qgs_clust'
-    commandLine 'docker-compose','up'
+    commandLine 'docker-compose','up', '-V', 'postgis', 'qgs', 'ogc', 'print'
 }
