@@ -16,6 +16,7 @@ services:
       - "8081:80"
     volumes:
       - ../.gitignored/pipe_data/qgs:/data:ro
+      - ../.gitignored/geodata:/geodata/geodata:ro
       - ./pg_service.conf:/etc/postgresql-common/pg_service.conf:ro
     depends_on:
       - postgis
@@ -68,7 +69,7 @@ services:
       - OGC_SERVICE_URL=http://ogc:9090/ogc/
       - QGIS_SERVER_VERSION=2.18.19
     volumes:
-      - ../.gitignored/other_data/print://srv/qwc_service/config/default:ro
+      - ../.gitignored/pipe_data/print://srv/qwc_service/config/default:ro
     ports:
       - "5019:9090"
 

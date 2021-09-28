@@ -1,0 +1,32 @@
+{
+  "ch.are.bauzonen": [
+    {
+      "name": "ch.are.bauzonen",
+      "title": "Bauzonen (Quelle Bund)",
+      "abstract": "Der Datensatz `Bauzonen Schweiz (harmonisiert)` basiert auf den bei den kantonalen Fachstellen f\u00fcr Raumplanung am 1.1.2017 verf\u00fcgbaren Geodaten zu den Bauzonen. Die kantonalen Zonentypen wurden gem\u00e4ss dem minimalen Geodatenmodell Nutzungsplanung den neun Hauptnutzungen innerhalb der Bauzonen zugeordnet.",
+      "visibility": true,
+      "queryable": true,
+      "opacity": 255,
+      "bbox": {
+        "bounds": [
+          5.70211,
+          45.7392,
+          10.6432,
+          47.8505
+        ],
+        "crs": "EPSG:4326"
+      },
+      "externalLayer": {
+        "name": "wms:https://wms.geo.admin.ch/#ch.are.bauzonen",
+        "type": "wms",
+        "url": "https://wms.geo.admin.ch/",
+        "params": {
+          "LAYERS": "ch.are.bauzonen"
+        },
+        "infoFormats": [
+          "text/plain"
+        ]
+      }
+    }
+  ]
+}

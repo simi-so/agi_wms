@@ -1,1 +1,1 @@
-docker-compose up -V pub
+docker-compose up -V postgis

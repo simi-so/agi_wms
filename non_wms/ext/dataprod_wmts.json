@@ -1,0 +1,26 @@
+{
+	"ch.are.bauzonen_wmts": [{
+		"name": "ch.are.bauzonen_wmts",
+		"title": "Bauzonen WMTS (Quelle Bund)",
+		"abstract": "Der Datensatz \u201eBauzonen Schweiz (harmonisiert)\u201c basiert auf den bei den kantonalen Fachstellen f\u00fcr Raumplanung am 1.1.2017 verf\u00fcgbaren Geodaten zu den Bauzonen. Die kantonalen Zonentypen wurden gem\u00e4ss dem minimalen Geodatenmodell Nutzungsplanung den neun Hauptnutzungen innerhalb der Bauzonen zugeordnet.",
+		"visibility": true,
+		"queryable": false,
+		"opacity": 255,
+		"bbox": {
+			"bounds": [5.70211, 45.7392, 10.6432, 47.8505],
+			"crs": "EPSG:4326"
+		},
+		"externalLayer": {
+			"name": "wmts:https://wmts10.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml#ch.are.bauzonen",
+			"type": "wmts",
+			"url": "https://wmts.geo.admin.ch/1.0.0/ch.are.bauzonen/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.png",
+			"tileMatrixPrefix": "",
+			"tileMatrixSet": "2056_26",
+			"originX": 2420000.0,
+			"originY": 1350000.0,
+			"projection:": "EPSG:2056",
+			"resolutions": [3999.999999996, 3750.0000000119994, 3499.9999999999995, 3249.9999999879997, 3000.0000000039995, 2750.0000000003997, 2499.9999999996, 2249.9999999988, 2000.0000000008, 1749.9999999999998, 1499.9999999991999, 1250.0000000011999, 1000.0000000004, 749.9999999995999, 650.0000000004, 499.9999999987999, 249.99999999995998, 100.00000000003999, 49.999999999879996, 20.000000000007997, 10.000000000003999, 4.999999999988, 2.4999999999996, 2.0000000000008, 1.4999999999992, 1.0000000000004, 0.49999999999879996],
+			"tileSize": ["256", "256"]
+		}
+	}]
+}

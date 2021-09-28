@@ -120,5 +120,5 @@ task up(type:Exec){
     //dependsOn featInfoJson
     //dependsOn legendJson
     workingDir 'qgs_clust'
-    commandLine 'docker-compose','up', '-V', 'postgis', 'qgs', 'ogc', 'print'
+    commandLine 'docker-compose','up', '-V'
 }

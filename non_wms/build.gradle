@@ -3,8 +3,8 @@ def inBaseDir = '/home/bjsvwjek/code/pipelines/api_webgisclient/sql2json/templat
 def outBaseDir = projectDir.getParent().toString() + '/.gitignored/other_data'
 def baseCmd = [
     'java', '-Dorg.slf4j.simpleLogger.defaultLogLevel=info', '-jar', projectDir.getParent().toString() + '/.gitignored/pipe_bin/sql2json/sql2json.jar',
-    '-c', 'jdbc:postgresql://localhost:5433/simi',
-    '-u', 'postgres', '-p', 'postgres'
+    '-c', 'jdbc:postgresql://geodb-t.rootso.org:5432/simi',
+    '-u', 'bjsvwjek', '-p', '4400RRooss@@'
 ]
 
 task _dprodPerm(type:Copy){
@@ -36,7 +36,7 @@ task mapJson(type:Exec){
         ]
 }
 
-task cccJson(type:Exec){
+task _cccJson(type:Exec){
     commandLine baseCmd + [
         '-t',  inBaseDir + '/ccc-config/template.json',
         '-o',  outBaseDir + '/ccc/cccConfig.json', 
@@ -49,6 +49,7 @@ task down(type:Exec){
     ignoreExitValue true
 }
 
+/*
 task printJson(type:Exec){
     commandLine baseCmd + [
         '-t',  inBaseDir + '/print-service/_dev_template.json',
@@ -56,6 +57,7 @@ task printJson(type:Exec){
         '-s', 'https://github.com/qwc-services/qwc-print-service/raw/master/schemas/qwc-print-service.json'
         ]
 }
+*/
 
 task dServJson(type:Exec){
     commandLine baseCmd + [
@@ -65,18 +67,28 @@ task dServJson(type:Exec){
         ]
 }
 
-task repJson(type:Exec){
+task _repPerm(type:Copy){
+    from projectDir.getParent().toString() + '/.gitignored/pipe_data/multi/permissions.json'
+    into outBaseDir + '/report'
+}
+
+task repJson(type:Exec, dependsOn:_repPerm){
     commandLine baseCmd + [
         '-t',  inBaseDir + '/document-service/template.json',
-        '-o',  outBaseDir + '/report/documentConf.json', 
+        '-o',  outBaseDir + '/report/documentConfig.json', 
         '-s', 'https://github.com/qwc-services/qwc-document-service/raw/master/schemas/qwc-document-service.json'
         ]
 }
 
+task ccc(type:Exec){
+    dependsOn down
+    dependsOn _cccJson
+    commandLine 'docker-compose','up', '-V', 'ccc'
+}
 
 
 task up(type:Exec){
     dependsOn down
-    dependsOn repJson
-    commandLine 'docker-compose','up'
+    dependsOn dprodJson
+    commandLine 'docker-compose','up', '-V'
 }
